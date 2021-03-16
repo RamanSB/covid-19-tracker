@@ -20,46 +20,69 @@ import apiCredentials from './api/credentials.js';
 
 
 const countries = ["Angola", "Argentina", "Australia","Azerbaijan","Canada","China",
- "Denmark","Greece","Indonesia","Indonesia","Italy","Italy","Japan","Japan",
- "Malaysia","Norway","Oman","Philippines","Turkey","Chile","Chile","France",
- "Bahamas","Comoros","Cyprus","Malta","Mauritius","Seychelles","Tonga","Vanuatu",
- "Samoa","Guadeloupe","Fiji"]
-
-let {apiHost, apiKey} = apiCredentials;
-
-const endpoint = 'https://coivd-19-data.p.rapidapi.com/country';
-
-let countryCovidCaseMap = {};
+  "Denmark","Greece","Indonesia","Indonesia","Italy","Italy","Japan","Japan",
+  "Malaysia","Norway","Oman","Philippines","Turkey","Chile","Chile","France",
+  "Bahamas","Comoros","Cyprus","Malta","Mauritius","Seychelles","Tonga","Vanuatu",
+  "Samoa","Guadeloupe","Fiji"];
 
 
-async function initializeMap(){
-  console.log(`[initializeMap]`);
-  let promises = [];
-  let options = {
-    method: 'GET',
-    url: endpoint,
-    params: {name: "italy"},
-    headers: {
-      'x-rapidapi-key': apiKey,
-      'x-rapidapi-host': apiHost
-    }
-  };
 
-  for (let country of countries) {
-    await new Promise(r => setTimeout(r, 2000));
-    options['params']['name'] = country;
-    axios(options).then((response) => {
-      console.log(`[Resolving promise] ${JSON.stringify(response.data)}`);
-      const {country, confirmed} = response.data[0];
-      countryCovidCaseMap[country] = confirmed;
-      console.log(`[InitializeMap] update: ${country} ${confirmed} ${JSON.stringify(countryCovidCaseMap)}`);
-    });
+function decileHeatMap(minColor=[255,0,0], maxColor=[0,255,0], nEvenIncrements=50){
+  const valueIncrements = Array(nEvenIncrements).fill(1).map((element, index) => (index + 1)/nEvenIncrements);
+  console.log(`valueIncrements: ${valueIncrements}`);
+  console.log(`minColor: ${minColor} | maxColor: ${maxColor}`);
+
+  function fullRgbToHex(r, g, b){
+      function rgbSingleValueToHex(rgb) {
+        let hex = Number(rgb).toString(16);
+        if (hex.length < 2) {
+             hex = "0" + hex;
+        }
+        return hex;
+      };
+      let red = rgbSingleValueToHex(r);
+      let green = rgbSingleValueToHex(g);
+      let blue = rgbSingleValueToHex(b);
+      return red+green+blue;
   }
 
-  console.log(`CountryCovidCaseMap: ${JSON.stringify(countryCovidCaseMap)}`);
+  let noOfIncrements = valueIncrements.length;
+  console.log(`noOfIncremenets: ${noOfIncrements}`);
+  let colorsFromMinToMid = Array(noOfIncrements/2).fill(minColor).map((element, index) => {
+    element[0] = element[0] - (index * (255/25));
+    return element;
+  });
+  let colorsFromMidToMax = Array(noOfIncrements/2).fill(maxColor).map((element, index) => {
+    element[noOfIncrements/2 - (index + 1)] = element[1] - ((noOfIncrements/2 - (index+1)) * (255/25));
+    return element;
+  });;
+
+
+  console.log(`colorsFromMinToMid: ${colorsFromMinToMid}`);
+  console.log(`RGB: 255,0,0 = ${fullRgbToHex(...minColor)}`);
+  console.log(`RGB: 0,255,0 = ${fullRgbToHex(...maxColor)}`);
+
 
 
 }
+
+
+let {apiHost, apiKey} = apiCredentials;
+
+const endpoint = 'https://covid-19-data.p.rapidapi.com/country';
+
+let countryCovidRecoveredRatioOfConfirmedCasesMap = {};
+
+let options = {
+  method: 'GET',
+  url: endpoint,
+  params: {name: "italy"},
+  headers: {
+    'x-rapidapi-key': apiKey,
+    'x-rapidapi-host': apiHost
+  }
+};
+
 
 const handleMapClick = (country) => {
   console.log(`[handleMapClick] ${country}`);
@@ -68,8 +91,29 @@ const handleMapClick = (country) => {
 }
 
 function WorldMap() {
+  decileHeatMap();
+  React.useEffect(initializeMap, []); //Run initializeMap only once after the initial render.
+  const [covidMap, setCovidMap] = React.useState({});
 
-  React.useEffect(initializeMap, [])
+  async function initializeMap(){
+    console.log(`[initializeMap] runs due to useEffect`);
+    for (let country of countries) {
+      await new Promise(r => setTimeout(r, 2000));
+      options['params']['name'] = country;
+      axios(options).then((response) => {
+        const {country, confirmed, recovered} = response.data[0];
+        let ratio = recovered/confirmed;
+        console.log(`Data: ${JSON.stringify(response.data[0])}`);
+        console.log(`Update: Country ${country} | Confirmed: ${confirmed} | Recovered: ${recovered} | ratio: ${ratio}`);
+        countryCovidRecoveredRatioOfConfirmedCasesMap[country] = ratio
+      });
+    };
+    setCovidMap(countryCovidRecoveredRatioOfConfirmedCasesMap);
+    console.log(`CountryCovidCaseMap: ${JSON.stringify(countryCovidRecoveredRatioOfConfirmedCasesMap)}`);
+    return countryCovidRecoveredRatioOfConfirmedCasesMap;
+  }
+
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +132,7 @@ function WorldMap() {
         d="M1121.2 572l.6 2-.7 3.1.9 3-.9 2.4.4 2.2-11.7-.1-.8 20.5 3.6 5.2 3.6 4-10.4 2.6-13.5-.9-3.8-3-22.7.2-.8.5-3.3-2.9-3.6-.2-3.4 1.1-2.7 1.2-.5-4 .9-5.7 2-5.9.3-2.7 1.9-5.8 1.4-2.6 3.3-4.2 1.9-2.9.6-4.7-.3-3.7-1.6-2.3-1.5-3.9-1.3-3.8.3-1.4 1.7-2.5-1.6-6.2-1.2-4.3-2.8-4.1.6-1.2 2.3-.9 1.7.1 2-.7 16.7.1 1.3 4.7 1.6 3.9 1.3 2.1 2.1 3.3 3.8-.5 1.8-.9 3.1.9.9-1.6 1.5-3.7 3.5-.3.3-1.1h2.9l-.5 2.3 6.8-.1.1 4.1 1.1 2.4-.9 3.9.4 4 1.8 2.4-.4 7.6 1.4-.6 2.4.2 3.5-1 2.6.4zM1055.3 539l-1.5-4.8 2.3-2.8 1.7-1.1 2.1 2.2-2 1.4-1 1.6-.2 2.8-1.4.7z"
         className="Angola"
         onClick={() => handleMapClick("Angola")}
-        fill={countryCovidCaseMap["Angola"] > 20000 ? "red" : "blue"}
+        fill={covidMap["Angola"] > 20000 ? "red" : "blue"}
       ></path>
       <path d="M1088 228l.4 1.2 1.4-.6 1.2 1.7 1.3.7.6 2.3-.5 2.2 1 2.7 2.3 1.5.1 1.7-1.7.9-.1 2.1-2.2 3.1-.9-.4-.2-1.4-3.1-2.2-.7-3 .1-4.4.5-1.9-.9-1-.5-2.1 1.9-3.1z"></path>
       <path d="M1296.2 336.7l1.3 5.1h-2.8v4.2l1.1.9-2.4 1.3.2 2.6-1.3 2.6v2.6l-1 1.4-16.9-3.2-2.7-6.6-.3-1.4.9-.4.4 1.8 4.2-1 4.6.2 3.4.2 3.3-4.4 3.7-4.1 3-4 1.3 2.2z"></path>
@@ -96,7 +140,7 @@ function WorldMap() {
         d="M669.1 851.7l-3-.2h-5l-6-13.6 3.1 2.8 4.3 4.6 7.8 3.7 7.3 1.5-.8 3-4.4.3-3.3-2.1zM638.6 644.7l11.3 10.4 4.6 1 7.3 4.8 5.9 2.5 1.1 2.8-4.2 9.8 5.8 1.7 6.3 1 4.2-1 4.3-5 .3-5.6 2.6-1.3 3.2 3.8.4 5.1-4.2 3.5-3.3 2.6-5.3 6.3-6 8.7-.5 5.2-.4 6.6 1.2 6.4-.9 1.4.4 4.1.3 3.4 7.8 5.5.2 4.4 3.9 2.8.3 3.1-3.3 8.2-7 3.5-10.2 1.3-6-.7 2.1 3.9.1 4.7 1.8 3.2-2.5 2.3-5.1.9-5.6-2.4-1.5 1.7 2.5 6.3 4 1.9 2.3-2 2.5 3.3-4.2 2-2.9 4 1.2 6.3-.1 3.4h-4.8l-3 3.2.1 4.8 6.5 4.6 5.2 1.2.2 5.7-4.6 3.5-.6 7.3-3.5 2.4-.9 2.9 4.2 6.5 4.6 3.5-2.1-.3-4.9-1-12.1-.8-3.5-3.6-1.9-4.6-3.1.4-2.6-2.3-3.1-6.5 2.7-2.8.1-3.9-1.8-3.2.7-5.4-1.1-8.3-1.8-3.7 1.8-1.2-1.4-2.4-2.8-1.2.8-2.7-3.1-2.4-3.7-7.3 1.7-1.3-3.3-7.8-.8-6.5-.2-5.7 2.5-2.3-3.3-6.3-1.6-5.8 3-4.2-1.4-5.4 1.6-6.2-1.4-5.9-1.6-1.2-4.9-11.1 2.1-6.6-1.7-6.2.9-5.9 2.6-6 3.3-4-2-2.5.8-2.1-1.6-10.7 5.6-3.1 1.2-6.7-.9-1.6 4-5.8 7.5 1.6 3.7 4.6 1.6-5.2 6.4.3 1 1.4z"
         className="Argentina"
         fill="gray"
-        fill={countryCovidCaseMap["Argentina"] > 20000 ? "red" : "blue"}
+        fill={covidMap["Argentina"] > 20000 ? "red" : "blue"}
       ></path>
       <path d="M1230.8 253l-1.8.2-2.8-3.7-.2-1h-2.3l-1.9-1.7-1 .1-2.4-1.8-4.2-1.6-.1-3.1-1.3-2.2 7-1 1.4 1.6 2.2 1.1-.7 1.6 3.2 2.2-1.1 2.1 2.6 1.7 2.5 1 .9 4.5z"></path>
       <path

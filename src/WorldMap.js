@@ -19,51 +19,51 @@ import apiCredentials from './api/credentials.js';
 */
 
 
-const countries = ["Angola", "Argentina", "Australia","Azerbaijan","Canada","China",
-  "Denmark","Greece","Indonesia","Indonesia","Italy","Italy","Japan","Japan",
-  "Malaysia","Norway","Oman","Philippines","Turkey","Chile","Chile","France",
-  "Bahamas","Comoros","Cyprus","Malta","Mauritius","Seychelles","Tonga","Vanuatu",
-  "Samoa","Guadeloupe","Fiji"];
+const countries = ["Angola", "Argentina", "Australia","Azerbaijan","Canada","China",];
+  // "Denmark","Greece","Indonesia","Indonesia","Italy","Italy","Japan","Japan",
+  // "Malaysia","Norway","Oman","Philippines","Turkey","Chile","Chile","France",
+  // "Bahamas","Comoros","Cyprus","Malta","Mauritius","Seychelles","Tonga","Vanuatu",
+  // "Samoa","Guadeloupe","Fiji"];
 
 
 
-function decileHeatMap(minColor=[255,0,0], maxColor=[0,255,0], nEvenIncrements=50){
-  const valueIncrements = Array(nEvenIncrements).fill(1).map((element, index) => (index + 1)/nEvenIncrements);
-  console.log(`valueIncrements: ${valueIncrements}`);
-  console.log(`minColor: ${minColor} | maxColor: ${maxColor}`);
+function decileHeatMap(minColor=[255,0,0], maxColor=[0,255,0], nEvenIncrements=100){
+  const valueIncrements = Array(nEvenIncrements).fill(1).map((element, index) => ((index + 1)/nEvenIncrements).toFixed(2));
+  function RGBToHex(r,g,b) {
+    r = r.toString(16);
+    g = g.toString(16);
+    b = b.toString(16);
 
-  function fullRgbToHex(r, g, b){
-      function rgbSingleValueToHex(rgb) {
-        let hex = Number(rgb).toString(16);
-        if (hex.length < 2) {
-             hex = "0" + hex;
-        }
-        return hex;
-      };
-      let red = rgbSingleValueToHex(r);
-      let green = rgbSingleValueToHex(g);
-      let blue = rgbSingleValueToHex(b);
-      return red+green+blue;
-  }
+    if (r.length == 1)
+      r = "0" + r;
+    if (g.length == 1)
+      g = "0" + g;
+    if (b.length == 1)
+      b = "0" + b;
+
+    return "#" + r + g + b;
+}
 
   let noOfIncrements = valueIncrements.length;
-  console.log(`noOfIncremenets: ${noOfIncrements}`);
-  let colorsFromMinToMid = Array(noOfIncrements/2).fill(minColor).map((element, index) => {
-    element[0] = element[0] - (index * (255/25));
-    return element;
+  let minToMidColorMap = Array(noOfIncrements/2).fill(1).map((element, index) => {
+    let array = [255-5*index, 0, 0];
+    let hexColor = RGBToHex(array[0], array[1], array[2]);
+    return hexColor;
   });
-  let colorsFromMidToMax = Array(noOfIncrements/2).fill(maxColor).map((element, index) => {
-    element[noOfIncrements/2 - (index + 1)] = element[1] - ((noOfIncrements/2 - (index+1)) * (255/25));
-    return element;
-  });;
 
+  let midToMaxColorMap = Array(noOfIncrements/2).fill(1).map((element, index) => {
+    let array = [0, 0+index*5, 0];
+    let hexColor = RGBToHex(array[0], array[1], array[2]);
+    return hexColor;
+  });
 
-  console.log(`colorsFromMinToMid: ${colorsFromMinToMid}`);
-  console.log(`RGB: 255,0,0 = ${fullRgbToHex(...minColor)}`);
-  console.log(`RGB: 0,255,0 = ${fullRgbToHex(...maxColor)}`);
-
-
-
+  let colorsArray = minToMidColorMap.concat(midToMaxColorMap);
+  let colorMap = {};
+  for(let i in valueIncrements){
+    colorMap[valueIncrements[i]] = colorsArray[i];
+  }
+  console.log(`ColorMap: ${JSON.stringify(colorMap)}`);
+  return colorMap;
 }
 
 
@@ -91,7 +91,8 @@ const handleMapClick = (country) => {
 }
 
 function WorldMap() {
-  decileHeatMap();
+  let colorMap = decileHeatMap();
+  console.log(`Color Map: ${JSON.stringify(colorMap)}`);
   React.useEffect(initializeMap, []); //Run initializeMap only once after the initial render.
   const [covidMap, setCovidMap] = React.useState({});
 
@@ -105,7 +106,7 @@ function WorldMap() {
         let ratio = recovered/confirmed;
         console.log(`Data: ${JSON.stringify(response.data[0])}`);
         console.log(`Update: Country ${country} | Confirmed: ${confirmed} | Recovered: ${recovered} | ratio: ${ratio}`);
-        countryCovidRecoveredRatioOfConfirmedCasesMap[country] = ratio
+        countryCovidRecoveredRatioOfConfirmedCasesMap[country] = ratio.toFixed(2);
       });
     };
     setCovidMap(countryCovidRecoveredRatioOfConfirmedCasesMap);
@@ -132,7 +133,7 @@ function WorldMap() {
         d="M1121.2 572l.6 2-.7 3.1.9 3-.9 2.4.4 2.2-11.7-.1-.8 20.5 3.6 5.2 3.6 4-10.4 2.6-13.5-.9-3.8-3-22.7.2-.8.5-3.3-2.9-3.6-.2-3.4 1.1-2.7 1.2-.5-4 .9-5.7 2-5.9.3-2.7 1.9-5.8 1.4-2.6 3.3-4.2 1.9-2.9.6-4.7-.3-3.7-1.6-2.3-1.5-3.9-1.3-3.8.3-1.4 1.7-2.5-1.6-6.2-1.2-4.3-2.8-4.1.6-1.2 2.3-.9 1.7.1 2-.7 16.7.1 1.3 4.7 1.6 3.9 1.3 2.1 2.1 3.3 3.8-.5 1.8-.9 3.1.9.9-1.6 1.5-3.7 3.5-.3.3-1.1h2.9l-.5 2.3 6.8-.1.1 4.1 1.1 2.4-.9 3.9.4 4 1.8 2.4-.4 7.6 1.4-.6 2.4.2 3.5-1 2.6.4zM1055.3 539l-1.5-4.8 2.3-2.8 1.7-1.1 2.1 2.2-2 1.4-1 1.6-.2 2.8-1.4.7z"
         className="Angola"
         onClick={() => handleMapClick("Angola")}
-        fill={covidMap["Angola"] > 20000 ? "red" : "blue"}
+        fill="red"
       ></path>
       <path d="M1088 228l.4 1.2 1.4-.6 1.2 1.7 1.3.7.6 2.3-.5 2.2 1 2.7 2.3 1.5.1 1.7-1.7.9-.1 2.1-2.2 3.1-.9-.4-.2-1.4-3.1-2.2-.7-3 .1-4.4.5-1.9-.9-1-.5-2.1 1.9-3.1z"></path>
       <path d="M1296.2 336.7l1.3 5.1h-2.8v4.2l1.1.9-2.4 1.3.2 2.6-1.3 2.6v2.6l-1 1.4-16.9-3.2-2.7-6.6-.3-1.4.9-.4.4 1.8 4.2-1 4.6.2 3.4.2 3.3-4.4 3.7-4.1 3-4 1.3 2.2z"></path>

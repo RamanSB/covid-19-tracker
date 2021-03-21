@@ -2,3 +2,15 @@
   width: inherit;
   height: inherit;
 }
+
+.Canada:hover {
+  fill: 'blue';
+}
+
+path:hover {
+  fill:'blue';
+}
+
+.world-map:hover {
+  fill: 'blue';
+}

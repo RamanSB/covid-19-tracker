@@ -2,7 +2,7 @@ import React from "react";
 import './Map.css';
 import axios from 'axios';
 import apiCredentials from './api/credentials.js';
-import { Tooltip } from 'react-svg-tooltip';
+
 /*
   Example response:
   {
@@ -17,6 +17,8 @@ import { Tooltip } from 'react-svg-tooltip';
     "lastChange": "2021-03-14T17:06:49+01:00",
     "lastUpdate": "2021-03-14T22:30:03+01:00"
   }
+
+
 */
 
 
@@ -29,14 +31,27 @@ const countries = ["Angola", "Argentina", "Australia","Azerbaijan","Canada","Chi
   "Bahamas","Comoros","Cape Verde", "Cayman Islands", "Falkland Islands", "Faeroe Islands",
   "Micronesia", "Malta", "Saint Kitts and Nevis", "Northern Mariana Islands",
   "New Caledonia", "Puerto Rico", "French Polynesia", "Solomon Islands", "Turks and Caicos Islands",
-  "Trinidad and Tobago", "U.S. Virgin Islands", "São Tomé and Principe","Afghanistan","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antarctica","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus",
-  "Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Bouvet Island","Brazil","British Indian Ocean Territory","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","CAR","Cayman Islands","Chad","Channel Islands","Chile",
-  "China","Christmas Island","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Diamond Princess","Djibouti","Dominica","Dominican Republic","DRC","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
-  "Faeroe Islands","Falkland Islands","Fiji","Finland","France","French Guiana","French Polynesia","French Southern Territories","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guernsey","Guinea","Guyana","Haiti","Heard Island and Mcdonald Islands",
-  "Honduras","Hong Kong","Hungary","Iceland","India", "Poland", "North Korea", "Paraguay", "Qatar", "Romania", "Burundi", "Western Sahara", "Iran", "Sudan",
-  "South Sudan", "Senegal", "Sierra Leone", "Nicaragua", "Serbia", "Suriname", "Slovakia", "Slovenia", "Sweden", "Eswatini", "Syria",
-  "Chad",   "Togo", "Turkmenistan", "Tajikistan", "Turkmenistan", "Tunisia", "Turkey", "Taiwan", "Tanzania", "Uganda", "Ukraine", "Uruguay",
-  "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "Somalia", "Kosovo", "South Africa"]
+  "Trinidad and Tobago", "U.S. Virgin Islands", "São Tomé and Principe","Afghanistan","Afghanistan",
+  "Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antarctica","Antigua and Barbuda",
+  "Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain",
+  "Bangladesh","Barbados",
+  "Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana",
+  "Bouvet Island","Brazil","British Indian Ocean Territory","British Virgin Islands","Brunei","Bulgaria",
+  "Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","CAR","Cayman Islands",
+  "Chad","Channel Islands","Chile",
+  "China","Christmas Island","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Croatia","Cuba",
+  "Cyprus","Czech Republic","Denmark","Diamond Princess","Djibouti","Dominica","Dominican Republic","DRC",
+  "Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
+  "Faeroe Islands","Falkland Islands","Fiji","Finland","France","French Guiana","French Polynesia",
+  "French Southern Territories","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland",
+  "Grenada","Guadeloupe","Guam","Guatemala","Guernsey","Guinea","Guyana","Haiti",
+  "Heard Island and Mcdonald Islands",
+  "Honduras","Hong Kong","Hungary","Iceland","India", "Poland", "North Korea", "Paraguay", "Qatar", "Romania",
+  "Burundi", "Western Sahara", "Iran", "Sudan","South Sudan", "Senegal", "Sierra Leone", "Nicaragua", "Serbia",
+   "Suriname", "Slovakia", "Slovenia", "Sweden", "Eswatini", "Syria","Chad", "Togo",
+    "Turkmenistan", "Tajikistan", "Turkmenistan", "Tunisia", "Turkey", "Taiwan", "Tanzania",
+   "Uganda", "Ukraine", "Uruguay","Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Zambia",
+   "Zimbabwe", "Somalia", "Kosovo", "South Africa"]
 
 
 function decileHeatMap(minColor=[255,0,0], maxColor=[0,255,0], nEvenIncrements=100){
@@ -130,18 +145,17 @@ function WorldMap() {
 
   return (
     <svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="inherit"
-  height="inherit"
-  fill="#ececec"
-  stroke="#000"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  strokeWidth="0.2"
-  version="1.2"
-  viewBox="0 0 2000 857"
-  className="world-map"
->
+      xmlns="http://www.w3.org/2000/svg"
+      width="inherit"
+      height="inherit"
+      fill="#ececec"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="0.2"
+      version="1.2"
+      viewBox="0 0 2000 857"
+      className="world-map">
   <path d="M1383 261.6l1.5 1.8-2.9.8-2.4 1.1-5.9.8-5.3 1.3-2.4 2.8 1.9 2.7 1.4 3.2-2 2.7.8 2.5-.9 2.3-5.2-.2 3.1 4.2-3.1 1.7-1.4 3.8 1.1 3.9-1.8 1.8-2.1-.6-4 .9-.2 1.7h-4.1l-2.3 3.7.8 5.4-6.6 2.7-3.9-.6-.9 1.4-3.4-.8-5.3 1-9.6-3.3 3.9-5.8-1.1-4.1-4.3-1.1-1.2-4.1-2.7-5.1 1.6-3.5-2.5-1 .5-4.7.6-8 5.9 2.5 3.9-.9.4-2.9 4-.9 2.6-2-.2-5.1 4.2-1.3.3-2.2 2.9 1.7 1.6.2h3l4.3 1.4 1.8.7 3.4-2 2.1 1.2.9-2.9 3.2.1.6-.9-.2-2.6 1.7-2.2 3.3 1.4-.1 2 1.7.3.9 5.4 2.7 2.1 1.5-1.4 2.2-.6 2.5-2.9 3.8.5h5.4z"></path>
   <path
     d="M1121.2 572l.6 2-.7 3.1.9 3-.9 2.4.4 2.2-11.7-.1-.8 20.5 3.6 5.2 3.6 4-10.4 2.6-13.5-.9-3.8-3-22.7.2-.8.5-3.3-2.9-3.6-.2-3.4 1.1-2.7 1.2-.5-4 .9-5.7 2-5.9.3-2.7 1.9-5.8 1.4-2.6 3.3-4.2 1.9-2.9.6-4.7-.3-3.7-1.6-2.3-1.5-3.9-1.3-3.8.3-1.4 1.7-2.5-1.6-6.2-1.2-4.3-2.8-4.1.6-1.2 2.3-.9 1.7.1 2-.7 16.7.1 1.3 4.7 1.6 3.9 1.3 2.1 2.1 3.3 3.8-.5 1.8-.9 3.1.9.9-1.6 1.5-3.7 3.5-.3.3-1.1h2.9l-.5 2.3 6.8-.1.1 4.1 1.1 2.4-.9 3.9.4 4 1.8 2.4-.4 7.6 1.4-.6 2.4.2 3.5-1 2.6.4zM1055.3 539l-1.5-4.8 2.3-2.8 1.7-1.1 2.1 2.2-2 1.4-1 1.6-.2 2.8-1.4.7z"
@@ -191,7 +205,7 @@ function WorldMap() {
   <path
     d="M645.5 212.5l-2.2-3.6 2.9-8.5-1.6-1.8-3.7 1-1.1-1.6-5.5 4.7-3.2 4.9-2.8 2.9-2.5 1-1.7.3-1.1 1.5h-9.3l-7.8.1-2.7 1.1-6.8 4.4v-.1l-.9-.4-2 .9-1.9 1.3-1.8-1.1-4.7.8-3.9.9-1.9.8-2.3 2.1 1.8.7 1.7-.4h.3l-.3 1.9-4.8.7-2.8.8-1.7 1-2.6-.6-1.6.3-2.9 1.8-4.6 2-2.7-.4 2-2.2 3.7-3.5 4.1-2.1 1.1-1.8.9-3 3.8-3.5.9-4 1.1 3.9 3.8.9 2.4-2.1-1.4-4.8-.9-2-4-1.2-3.8-.7h-3.9l-3.4-.8-.4-1.4-1.4.9-1.2-.2 1.9-2.1-1.8-.8 1.9-2.4-1.2-1.8 1.7-1.8-5.2-.9-.1-3.6-.8-.8-3.3-.2-4.1-1.2-1.5.8-1.8 1.5-3.3 1-3.1 2.5-5.4-1.7-4.4.8-3.9-1.9-4.6-1-3.3-.4-1-1 .9-3.4h-1.7l-1.3 2.4H377l-5.4-6.1-1.6-2.7-7-2.6 1.3-5.5 3.6-3.7-4.1-2.7 3.1-4.9-2.1-4.4 2.5-3.2 5.1-2.9 3.2-3.8-4.6-3.8 1.4-6.9 1.1-4.2-1.6-2.7-.8-2.4.6-3.1-6.5 1.9-7.6 3.3-.3-3.8-.5-2.6-2.8-1.6-4.2-.2L385.4 87 410 66.6l6 1.3 3.3 2.6 3.7.5 6.3-2.2 7-1.7 5.3.6 8.9-2.3 8.2-1.3.2 2.2 4.5-1.3 3.9-2.5 2.1.6 1.4 4.8 9.5-3.7-3.9 4.1 6-.9 3.2-1.5 4.6.3 3.9 2.2 7.5 2 4.7.9 4.4-.3 2.9 2.8-8.5 2.7 6.4 1.1 11.9-.6 4.4-1 1.4 3.3 7.1-2.7-2.1-2.4 4.5-1.8 5.2-.3 3.9-.5 2.1 1.3 1.5 2.9 5-.4 5.3 2.5 7.2-.9 6 .1 2.4-3.4 4.5-.9 4.9 1.8-4.3 5.2 6.2-4.4 3.2.2 6.4-5.5-1.6-3.3-2.9-2.2 5.5-5.9 8.2-3.8 4.5.9 2 2.3.4 6-5.8 2.6 6.7 1.1-4.4 5.5 8.9-4.2 2.2 3.5-4.3 4 1.3 3.7 7.3-3.9 6.5-4.8 4.7-5.9 5.5.4 5.4.8 3.6 2.7-1.7 2.7-5.1 2.9.9 2.9-2.4 2.7-10.9 3.9-6.5.9-3.2-1.7-3.3 2.8-7.4 4.7-3 2.5-7.7 3.8-6.5.4-5.1 2.4-2.9 3.8-5.7.7-8.7 4.7-9.4 6.5-5 4.6-4.9 6.9 6 1-1.5 5.5-.8 4.6 7.3-1.2 7 2.6 3.3 2.3 1.7 2.8 4.9 1.7 3.6 2.5 7.6.4 4.8.6-3.6 5.2-1.7 6.1.1 6.9 4.4 5.9 4.7-2 5.6-6.4 2.3-9.6-1.7-3.2 9-2.9 7.5-4.2 4.8-4.2 1.7-4-.4-5.1-3.2-4.5 8.9-6.2 1-5.3 3.9-9 3.8-1.4 6.7 1.6 4.2.6 4.5-1.6 3.1 2 3.6 3.4.2 2.2 7.7.5-2.6 4.9-2.3 7.4 3.8 1 1.6 3.5 8.2-3.3 7.5-6.6 4.2-2.7 1.1 5.3 2.6 7.5 2 7.2-3.4 3.8 4.8 3.4 2.9 3.4 6.9 1.6 2.4 1.9v5.2l3.4.8 1.1 2.3-2 6.9-4.3 2.3-4.2 2.2-8.8 2.2-7.9 5-8.6 1.1-10.1-1.4h-7.3l-5.3.4-5.7 4.5-7.4 2.8-10.1 8.2-7.9 5.8 4.7-1 10.9-8.3 12.3-5.2 7.6-.6 3.3 3.1-6.1 4.2-.6 6.7.1 4.8 5.6 3.1 8.6-.9 7.2-7.1-1 4.6 2.5 2.3-7.4 4.1-12.4 3.8-5.8 2.5-7.2 4.6-3.7-.5 1.5-5.3 10.4-5.3-8.1.2-5.9.8z"
     className="Canada"
-    fill={/*colorMap[covidMap["Canada"]]*/"orange"}
+    fill={colorMap[covidMap["Canada"]]}
     id="canada"
   ></path>
   <text style={{fontSize:"30px"}} textAnchor="middle"><textPath href="#canada">Text</textPath></text>

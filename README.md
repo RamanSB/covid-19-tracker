@@ -5,7 +5,7 @@ To Do:
 2) Intending to add names & hover css effects to SVG paths. (see: https://stackoverflow.com/questions/66735815/how-to-overlay-text-on-an-svg-path-element-in-react-without-using-the-coordinate)
 
 Current state of project:
-![Demonstrating App](https://github.com/RamanSB/covid-19-tracker/blob/master/public/project_preview.png)
+![Demonstrating App](https://github.com/RamanSB/covid-19-tracker/blob/master/public/project_preview_new.png)
 
 
 # Getting Started with Create React App

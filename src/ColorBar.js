@@ -38,7 +38,7 @@ function ColorBarKey(){
 
     return (
       <div className="color-bar-container">
-          <h3>Color Key</h3>
+          <h3>  Color Key</h3>
           <ColorBar data={data}/>
       </div>
     )

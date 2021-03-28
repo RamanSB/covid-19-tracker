@@ -1,4 +1,9 @@
 <<<<<<< HEAD
+
+Current state of project:
+![Demonstrating App](https://github.com/RamanSB/covid--19-tracker/public/project_preview.png)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

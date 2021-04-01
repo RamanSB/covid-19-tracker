@@ -2,6 +2,7 @@ import React from "react";
 import './Map.css';
 import axios from 'axios';
 import apiCredentials from './api/credentials.js';
+import Modal from './Modal.js';
 
 /*
   Example response:
@@ -141,6 +142,7 @@ function WorldMap() {
 
 
   return (
+    <>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="inherit"
@@ -673,6 +675,8 @@ function WorldMap() {
   <circle cx="673.5" cy="724.1"></circle>
   <circle cx="1798.2" cy="719.3"></circle>
 </svg>
+  <Modal/>
+  </>
   );
 }
 

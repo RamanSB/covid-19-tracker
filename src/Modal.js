@@ -1,6 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import './Modal.css';
-
+import apiCredentials from './api/credentials.js';
 
 const handleCloseClick = (state, setModalState) => {
   console.log(`handleCloseClick: ${JSON.stringify(state)}`);
@@ -24,7 +25,7 @@ const Modal = ({state, setModalState}) => {
         </div>
         {/* Modal - Body */}
         <div className="modal-body">
-          <ModalContent/>
+          <ModalContent country={state['country']}/>
         </div>
         {/* Modal - Footer */}
         <div className="modal-footer">
@@ -35,14 +36,52 @@ const Modal = ({state, setModalState}) => {
   );
 }
 
+const {apiKey, apiHost} = apiCredentials;
 
-function ModalContent() {
+function ModalContent({country}) {
+  console.log(`[ModalContent] ${JSON.stringify(country)}`);
+  const endpoint = 'https://covid-19-data.p.rapidapi.com/country';
+
+  let options = {
+    method: 'GET',
+    url: endpoint,
+    params: {name: country},
+    headers: {
+      'x-rapidapi-key': apiKey,
+      'x-rapidapi-host': apiHost
+    }
+  };
+
+  const dataCategories = ['critical', 'confirmed', 'recovered'];
+
+
+  async function getData1(){
+    const response = await axios(options);
+    console.log(`response : ${JSON.stringify(response)}`);
+    return response;
+  }
+
+  function getData(){
+    let response = axios(options).then(res => {
+      console.log('ghehe'+JSON.stringify(res.data[0]));
+      return res.data[0];
+    }).catch(err => console.log(err));
+    return response;
+  }
+
+  let responseData = getData();
+  console.log(`responseData: ${JSON.stringify(responseData)}`);
+
+  let dataItems = dataCategories.map((category, index) => {
+    return <DataItem key={index} dataType={category} data={responseData[category]}/>
+  });
+
   return (
-      <DataItem dataType={"Deaths"} data={30131}/>
+      <ul>{dataItems}></ul>
   );
 }
 
-const DataItem = ({dataType, data}) => {
+function DataItem({dataType, data}){
   return (
     <div className="data-item">
       <span>{dataType} | {data}</span>

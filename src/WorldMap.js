@@ -132,7 +132,7 @@ function WorldMap() {
   async function initializeMap(){
     console.log(`[initializeMap] runs due to useEffect`);
     for (let country of countries) {
-      await new Promise(r => setTimeout(r, 5000));
+      await new Promise(r => setTimeout(r, 10000));
       options['params']['name'] = country;
       axios(options).then((response) => {
         console.log(`Response Data ($): ${JSON.stringify(response.data[0])}`);

@@ -5,13 +5,12 @@ import './Modal.css';
 const handleCloseClick = (state, setModalState) => {
   console.log(`handleCloseClick: ${JSON.stringify(state)}`);
   setModalState({
-    ...state,
     show: false
   });
 }
 
 const Modal = ({state, setModalState}) => {
-
+  console.log(`[Modal]`);
   if(!state['show']){
     return null;
   }
@@ -21,7 +20,7 @@ const Modal = ({state, setModalState}) => {
       <div className="modal-content">
         {/* Modal - Header */}
         <div className="modal-header">
-          <h5 className="modal-title">Modal title</h5>
+          <h5 className="modal-title">{state['country']}</h5>
         </div>
         {/* Modal - Body */}
         <div className="modal-body">

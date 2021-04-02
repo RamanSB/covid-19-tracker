@@ -1,6 +1,21 @@
 import React from 'react';
+import './Modal.css';
 
-const Modal = (props) => {
+
+const handleCloseClick = (state, setModalState) => {
+  console.log(`handleCloseClick: ${JSON.stringify(state)}`);
+  setModalState({
+    ...state,
+    show: false
+  });
+}
+
+const Modal = ({state, setModalState}) => {
+
+  if(!state['show']){
+    return null;
+  }
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -14,7 +29,7 @@ const Modal = (props) => {
         </div>
         {/* Modal - Footer */}
         <div className="modal-footer">
-          <button className="button">Close</button>
+          <button className="button" onClick={() => handleCloseClick(state, setModalState)}>Close</button>
         </div>
       </div>
     </div>

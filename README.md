@@ -1,3 +1,5 @@
+As per the free API only 1 request can be made per second. Hence for all countries to be populated on the SVG graphic, please wait roughly 2.5 minutes roughly ~150 seconds, for each country. Once populated the modal onClick event handler will be ready. Please do not click anything for the 1st 150s. Let the page load in the background.
+
 Note: The API used mentions recovery however the definition of recovered has not been stated, hence the definition is subjective. Please read the following: https://theconversation.com/what-does-recovered-from-coronavirus-mean-4-questions-answered-about-how-some-survive-and-what-happens-next-134883
 
 A global covid 19 recovery tracker. This project is responsible for querying the https://covid-19-data.p.rapidapi.com/ API and displaying the proportion of recovered people as a percentage of the confirmed cases using a color map. The color key is displayed below. 

@@ -1,8 +1,13 @@
 A global covid 19 recovery tracker. This project is responsible for querying the https://covid-19-data.p.rapidapi.com/ API and displaying the proportion of recovered people as a percentage of the confirmed cases using a color map. The color key is displayed below. 
 
+### Demo:
+![Demonstrating App]
+
+### Demo:
+![Demonstrating App](https://github.com/RamanSB/iPhoneCalculator/blob/master/demo/iphone-calculator-demo-resized-demo.gif)
+
 To Do: 
-1) Intending to add a modal that opens when a country is clicked with more data pertaining to daily covid-19 statistics for a given country
-2) Intending to add names & hover css effects to SVG paths. (see: https://stackoverflow.com/questions/66735815/how-to-overlay-text-on-an-svg-path-element-in-react-without-using-the-coordinate)
+1) Intending to add names & hover css effects to SVG paths. (see: https://stackoverflow.com/questions/66735815/how-to-overlay-text-on-an-svg-path-element-in-react-without-using-the-coordinate)
 
 Current state of project:
 ![Demonstrating App](https://github.com/RamanSB/covid-19-tracker/blob/master/public/project_preview_new.png)

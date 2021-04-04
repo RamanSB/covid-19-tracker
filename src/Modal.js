@@ -13,6 +13,7 @@ const handleCloseClick = (state, setModalState) => {
 const Modal = ({state, setModalState}) => {
   console.log(`[Modal]`);
   if(!state['show']){
+    console.log(`Modal is not shown.`);
     return null;
   }
 
@@ -42,27 +43,28 @@ const endpoint = 'https://covid-19-data.p.rapidapi.com/country';
 let modalContent = {};
 
 function ModalContent({country}) {
-  React.useEffect(getModalContentData, []);
+  React.useEffect(() => getModalContentData(), []);
   const [modalState, setModalState] = React.useState({});
-  let options = {
-    method: 'GET',
-    url: endpoint,
-    params: {name: country},
-    headers: {
-      'x-rapidapi-key': apiKey,
-      'x-rapidapi-host': apiHost
-    }
-  };
-
 
  async function getModalContentData(){
+   let options = {
+     method: 'GET',
+     url: endpoint,
+     params: {name: country},
+     headers: {
+       'x-rapidapi-key': apiKey,
+       'x-rapidapi-host': apiHost
+     }
+   };
+
     axios(options).then(
       response => {
         console.log(`Response from request: ${JSON.stringify(response.data[0])}`);
         modalContent = response.data[0];
+        setModalState(prevState => modalContent);
       }
     );
-    setModalState(prevState => modalContent);
+
   }
 
   console.log(`ModalState: ${JSON.stringify(modalState)}`);

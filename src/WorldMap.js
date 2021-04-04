@@ -138,7 +138,7 @@ function WorldMap() {
         console.log(`Response Data ($): ${JSON.stringify(response.data[0])}`);
         const {country, confirmed, recovered} = response.data[0];
         let ratio = recovered/confirmed;
-        //console.log(`Update: Country ${country} | Confirmed: ${confirmed} | Recovered: ${recovered} | ratio: ${ratio}`);
+        console.log(`Update: Country ${country} | Confirmed: ${confirmed} | Recovered: ${recovered} | ratio: ${ratio}`);
         countryCovidRecoveredRatioOfConfirmedCasesMap[country] = ratio.toFixed(2);
       });
     };

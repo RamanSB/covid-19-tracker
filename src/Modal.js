@@ -37,11 +37,13 @@ const Modal = ({state, setModalState}) => {
 }
 
 const {apiKey, apiHost} = apiCredentials;
+const endpoint = 'https://covid-19-data.p.rapidapi.com/country';
+
+let modalContent = {};
 
 function ModalContent({country}) {
-  console.log(`[ModalContent] ${JSON.stringify(country)}`);
-  const endpoint = 'https://covid-19-data.p.rapidapi.com/country';
-
+  React.useEffect(getModalContentData, []);
+  const [modalState, setModalState] = React.useState({});
   let options = {
     method: 'GET',
     url: endpoint,
@@ -52,39 +54,34 @@ function ModalContent({country}) {
     }
   };
 
-  const dataCategories = ['critical', 'confirmed', 'recovered'];
 
-
-  async function getData1(){
-    const response = await axios(options);
-    console.log(`response : ${JSON.stringify(response)}`);
-    return response;
+ async function getModalContentData(){
+    axios(options).then(
+      response => {
+        console.log(`Response from request: ${JSON.stringify(response.data[0])}`);
+        modalContent = response.data[0];
+      }
+    );
+    setModalState(prevState => modalContent);
   }
 
-  function getData(){
-    let response = axios(options).then(res => {
-      console.log('ghehe'+JSON.stringify(res.data[0]));
-      return res.data[0];
-    }).catch(err => console.log(err));
-    return response;
-  }
-
-  let responseData = getData();
-  console.log(`responseData: ${JSON.stringify(responseData)}`);
-
-  let dataItems = dataCategories.map((category, index) => {
-    return <DataItem key={index} dataType={category} data={responseData[category]}/>
+  console.log(`ModalState: ${JSON.stringify(modalState)}`);
+  const attrOfInterest = ['confirmed', 'recovered', 'critical', 'deaths', 'lastUpdate'];
+  let dataItems = attrOfInterest.map((elem, index) => {
+    return <li key={index}><DataItem dataType={elem} data={modalState[elem]}/></li>
   });
 
   return (
-      <ul>{dataItems}></ul>
+    <ul style={{"listStyleType":"none"}}>
+      {dataItems}
+    </ul>
   );
 }
 
 function DataItem({dataType, data}){
   return (
     <div className="data-item">
-      <span>{dataType} | {data}</span>
+      <span style={{"color":"white", "fontFamily":"Arial"}}>{dataType} : {data}</span>
     </div>
   );
 }

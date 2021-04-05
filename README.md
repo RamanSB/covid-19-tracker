@@ -90,3 +90,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # Global-COVID-19-Tracker
 A repository that displays the world map using an svg and paints (fill) the map &amp; adds colors to match a key representing the death toll. An onClickEventHandler will be added for each path and additional data about COVID will be revealed.
 >>>>>>> 67303a98c966a4a0ce31667b531bfebfb5445a7d
+
+
+#### Licenses
+
+React Color Bar - https://www.npmjs.com/package/react-color-bar

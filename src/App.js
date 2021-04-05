@@ -1,12 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import WorldMap from './WorldMap.js';
 import ColorBarKey from './ColorBar.js';
-
-let colorObject = {
-  start: [255, 0, 0],
-  end: [0, 255, 0]
-};
 
 function App() {
   return (

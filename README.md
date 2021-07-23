@@ -1,4 +1,5 @@
-Project Deployed @ https://covid-19-recovery-tracker.web.app/
+###Project Deployed
+https://covid-19-recovery-tracker.web.app/
 
 As per the free API only 1 request can be made per second. Hence for all countries to be populated on the SVG graphic, please wait roughly 2.5 minutes roughly ~150 seconds, for each country. Once populated the modal onClick event handler will be ready. Please do not click anything for the 1st 150s. Let the page load in the background.
 

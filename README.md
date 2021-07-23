@@ -4,6 +4,9 @@ Note: The API used mentions recovery however the definition of recovered has not
 
 A global covid 19 recovery tracker. This project is responsible for querying the https://covid-19-data.p.rapidapi.com/ API and displaying the proportion of recovered people as a percentage of the confirmed cases using a color map. The color key is displayed below. 
 
+
+## Project Deployed @ https://covid-19-recovery-tracker.web.app/
+
 ### Demo:
 ![Demonstrating App](https://github.com/RamanSB/covid-19-tracker/blob/master/public/covid-recovery-tracker-demo-resized.gif)
 
